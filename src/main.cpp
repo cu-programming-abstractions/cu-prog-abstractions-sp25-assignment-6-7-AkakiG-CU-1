@@ -7,165 +7,156 @@
 using namespace std;
 
 // Helper function to print test results
-void printTestResult(const string& testName, bool passed) {
-    cout << (passed ? "✓ " : "✗ ") << testName << endl;
+void printTestResult(const string& name, bool success) {
+    cout << (success ? "✓ " : "✗ ") << name << endl;
 }
 
-// Test basic list operations
 void testBasicOperations() {
     cout << "\n=== Testing Basic Operations ===" << endl;
-    
-    LinkedList list;
-    bool passed = true;
-    
+
+    LinkedList lst;
+    bool result = true;
+
     // Test empty list
-    passed &= list.isEmpty();
-    printTestResult("Empty list is empty", passed);
-    
+    result &= lst.isEmpty();
+    printTestResult("Empty list is empty", result);
+
     // Test prepend
-    list.prepend(1);
-    passed = !list.isEmpty();
-    printTestResult("List not empty after prepend", passed);
-    
+    lst.prepend(1);
+    result = !lst.isEmpty();
+    printTestResult("List not empty after prepend", result);
+
     // Test append
-    list.append(2);
-    list.append(3);
+    lst.append(2);
+    lst.append(3);
     cout << "List after append: ";
-    list.print(cout);
+    lst.print(cout);
     cout << endl;
-    
+
     // Test removeFront
-    int val = list.removeFront();
-    passed = (val == 1);
-    printTestResult("removeFront returns correct value", passed);
+    int value = lst.removeFront();
+    result = (value == 1);
+    printTestResult("removeFront returns correct value", result);
 }
 
-// Test copy operations
 void testCopyOperations() {
     cout << "\n=== Testing Copy Operations ===" << endl;
-    bool passed = true;
-    
+    bool success = true;
+
     // Create original list
-    LinkedList original;
-    original.append(1);
-    original.append(2);
-    original.append(3);
-    
+    LinkedList source;
+    source.append(1);
+    source.append(2);
+    source.append(3);
+
     // Test copy constructor
-    LinkedList copy1(original);
-    passed = (length(copy1) == length(original));
-    printTestResult("Copy constructor creates correct length", passed);
-    
+    LinkedList first(source);
+    success = (length(first) == length(source));
+    printTestResult("Copy constructor creates correct length", success);
+
     // Test assignment operator
-    LinkedList copy2;
-    copy2 = original;
-    passed = (length(copy2) == length(original));
-    printTestResult("Assignment operator creates correct length", passed);
-    
+    LinkedList second;
+    second = source;
+    success = (length(second) == length(source));
+    printTestResult("Assignment operator creates correct length", success);
+
     // Test deep copy
-    original.append(4);
-    passed = (length(copy1) == 3 && length(copy2) == 3);
-    printTestResult("Copies are independent", passed);
+    source.append(4);
+    success = (length(first) == 3 && length(second) == 3);
+    printTestResult("Copies are independent", success);
 }
 
-// Test utility functions
 void testUtilityFunctions() {
     cout << "\n=== Testing Utility Functions ===" << endl;
-    bool passed = true;
-    
-    LinkedList list;
-    list.append(1);
-    list.append(2);
-    list.append(3);
-    
+    bool success = true;
+
+    LinkedList lst;
+    lst.append(1);
+    lst.append(2);
+    lst.append(3);
+
     // Test length
-    passed = (length(list) == 3);
-    printTestResult("length returns correct value", passed);
-    
+    success = (length(lst) == 3);
+    printTestResult("length returns correct value", success);
+
     // Test sum
-    passed = (sum(list) == 6);
-    printTestResult("sum returns correct value", passed);
-    
+    success = (sum(lst) == 6);
+    printTestResult("sum returns correct value", success);
+
     // Test contains
-    passed = contains(list, 2) && !contains(list, 4);
-    printTestResult("contains works correctly", passed);
-    
+    success = contains(lst, 2) && !contains(lst, 4);
+    printTestResult("contains works correctly", success);
+
     // Test reverse
-    reverse(list);
-    passed = (list.removeFront() == 3);
-    printTestResult("reverse works correctly", passed);
-    
+    reverse(lst);
+    success = (lst.removeFront() == 3);
+    printTestResult("reverse works correctly", success);
+
     // Test nthFromEnd
-    list.append(4);
-    list.append(5);
-    passed = (nthFromEnd(list, 0) == 5 && nthFromEnd(list, 2) == 2);
-    printTestResult("nthFromEnd works correctly", passed);
+    lst.append(4);
+    lst.append(5);
+    success = (nthFromEnd(lst, 0) == 5 && nthFromEnd(lst, 2) == 2);
+    printTestResult("nthFromEnd works correctly", success);
 }
 
-// Test edge cases
 void testEdgeCases() {
     cout << "\n=== Testing Edge Cases ===" << endl;
-    bool passed = true;
-    
+    bool result = true;
+
     // Test empty list operations
-    LinkedList empty;
+    LinkedList emptyList;
     try {
-        empty.removeFront();
-        passed = false;
+        emptyList.removeFront();
+        result = false;
     } catch (const runtime_error&) {
-        passed = true;
+        result = true;
     }
-    printTestResult("removeFront throws on empty list", passed);
-    
+    printTestResult("removeFront throws on empty list", result);
+
     // Test nthFromEnd with invalid index
     try {
-        nthFromEnd(empty, 0);
-        passed = false;
+        nthFromEnd(emptyList, 0);
+        result = false;
     } catch (const runtime_error&) {
-        passed = true;
+        result = true;
     }
-    printTestResult("nthFromEnd throws on invalid index", passed);
-    
+    printTestResult("nthFromEnd throws on invalid index", result);
+
     // Test self-assignment
-    LinkedList list;
-    list.append(1);
-    list = list;  // Self-assignment
-    passed = (length(list) == 1);
-    printTestResult("Self-assignment works correctly", passed);
+    LinkedList lst;
+    lst.append(1);
+    lst = lst;
+    result = (length(lst) == 1);
+    printTestResult("Self-assignment works correctly", result);
 }
 
-// Test memory management
 void testMemoryManagement() {
     cout << "\n=== Testing Memory Management ===" << endl;
-    bool passed = true;
-    
-    // Test large list creation and destruction
-    LinkedList list;
-    for (int i = 0; i < 1000; i++) {
-        list.append(i);
+    bool success = true;
+
+    LinkedList lst;
+    for (int idx = 0; idx < 1000; idx++) {
+        lst.append(idx);
     }
-    passed = (length(list) == 1000);
-    printTestResult("Large list creation works", passed);
-    
-    // List will be automatically destroyed here
-    // If there are memory leaks, they will be detected by memory checking tools
+    success = (length(lst) == 1000);
+    printTestResult("Large list creation works", success);
 }
 
 int main() {
     cout << "Starting Linked List Tests\n" << endl;
-    
+
     try {
         testBasicOperations();
         testCopyOperations();
         testUtilityFunctions();
         testEdgeCases();
         testMemoryManagement();
-        
+
         cout << "\nAll tests completed!" << endl;
     } catch (const exception& e) {
         cout << "\nTest failed with exception: " << e.what() << endl;
         return 1;
     }
-    
+
     return 0;
 }
